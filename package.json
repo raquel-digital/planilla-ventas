@@ -1,0 +1,24 @@
+{
+  "name": "planilla-ventas",
+  "version": "1.0.0",
+  "description": "planilla para completar ventas del dia",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.heroku.com/planilla-ventas.git"
+  },
+  "engines": {
+    "node": "13.x",
+    "npm": "6.x"
+  },
+  "author": "Javier Falk",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "heroku": "^7.59.1"
+  }
+}
