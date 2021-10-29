@@ -14,7 +14,7 @@
   "author": "Javier Falk",
   "license": "ISC",
   "dependencies": {
-    "write-excel-file/node": "1.0.0",
+    "write-excel-file": "^1.0.0",
     "dotenv": "^10.0.0",
     "heroku": "^7.59.1",
     "express": "^4.17.1"
