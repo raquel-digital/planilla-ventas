@@ -7,7 +7,7 @@ let fecha = require("./utils/fecha");
 let controller = require("./utils/mainController");
 let pathLectura = `../baseDeDatos/${fecha}.json`;
 //DOTENV
-
+const dotenv = require('dotenv').config();
  
 var data = []; //array de ventas GLOBAL
 var ventaDiaria = [];// array de ventas dia a dia
@@ -32,7 +32,7 @@ var ventaDiaria = [];// array de ventas dia a dia
 //Iniciamos Web Socket
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const puerto = 8080;
+const puerto = process.env.PORT;;
 
 //HandleBars
 const handlebars = require('express-handlebars');
