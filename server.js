@@ -32,7 +32,7 @@ var ventaDiaria = [];// array de ventas dia a dia
 //Iniciamos Web Socket
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const puerto = process.env.PORT;;
+const PORT = process.env.PORT;;
 
 //HandleBars
 const handlebars = require('express-handlebars');
@@ -83,8 +83,8 @@ io.on('connect', socket => {
 //     filePath: `./baseDeDatos/ventas-mayorista-${fecha}.xlsx`
 // })
 
-http.listen(puerto, () => {
-    console.log(`servidor escuchando en http://localhost:${puerto}`);
+http.listen(PORT, () => {
+    console.log(`servidor escuchando en http://localhost:${PORT}`);
 });
 // en caso de error, avisar
 http.on('error', error => {
