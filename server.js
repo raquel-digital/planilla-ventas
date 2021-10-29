@@ -32,7 +32,7 @@ var ventaDiaria = [];// array de ventas dia a dia
 //Iniciamos Web Socket
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const PORT = process.env.PORT;;
+const PORT = process.env.PORT || 8080;
 
 //HandleBars
 const handlebars = require('express-handlebars');
