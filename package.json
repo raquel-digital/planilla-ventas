@@ -20,6 +20,6 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "heroku": "^7.59.1",
-    "express":"*"
+    "express":"6.14.4"
   }
 }
