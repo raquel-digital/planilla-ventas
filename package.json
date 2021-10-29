@@ -12,14 +12,14 @@
     "url": "https://git.heroku.com/planilla-ventas.git"
   },
   "engines": {
-    "node": "13.x",
-    "npm": "6.x"
+    "node": "6.14.4",
+    "npm": "6.14.4"
   },
   "author": "Javier Falk",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
     "heroku": "^7.59.1",
-    "express":"*"
+    "express":"6.14.4"
   }
 }
