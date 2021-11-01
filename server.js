@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//conectamos mongoDB
+require('./conecciones/mongoCompas');
+//CRUD
+// const mongo = require("./api/mongo");
+ let mongoCRUD = require("./api/mongo");
+
 //UTILS
 let fecha = require("./utils/fecha");
 let controller = require("./utils/mainController");
@@ -14,8 +20,14 @@ var ventaDiaria = [];// array de ventas dia a dia
 
 (async () => {
     try{
+        data = await mongoCRUD.leer(data, "mensual");
+        
+        if(data == null)
         data = await controller.leer(data, `${pathLectura}`);
-        let date =  new Date;        
+        let date =  new Date;
+        ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
+        
+        if(ventaDiaria == null)        
         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
     }catch(err){
         console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
@@ -27,7 +39,6 @@ var ventaDiaria = [];// array de ventas dia a dia
     }
     
 })()
-
 
 //Iniciamos Web Socket
 const http = require('http').Server(app);
@@ -64,13 +75,16 @@ io.on('connect', socket => {
     }
     
        
-    socket.on('nueva-venta', nuevaVenta => {
+    socket.on('nueva-venta', async nuevaVenta => {
         console.log(ventaDiaria)        
-        nuevaVenta.monto = parseFloat(nuevaVenta.monto);        
+        nuevaVenta.monto = parseFloat(nuevaVenta.monto);               
         ventaDiaria.push(nuevaVenta);
-        let date =  new Date;
+        let date =  new Date;        
         controller.escribir(ventaDiaria, `./baseDeDatos/${date.getDate()+"-"+fecha}`);
-        controller.sumarVentas(nuevaVenta, data, `./baseDeDatos/${fecha}`);
+        await mongoCRUD.guardar(nuevaVenta, "diario"); 
+        let result = await controller.sumarVentas(nuevaVenta, data, `./baseDeDatos/${fecha}`, "mensual");
+        console.log("DESDE SERVER "+result)
+        await mongoCRUD.sumarVenta(result)        
     });
 })
 

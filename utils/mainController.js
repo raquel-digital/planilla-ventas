@@ -2,6 +2,9 @@ const fs = require('fs');
 const { async } = require('rxjs');
 const path = `./baseDeDatos`;
 const writeXlsxFile = require('write-excel-file/node');
+//CRUD
+//let mongo = require("../api/mongo");
+let mongoCRUD = require("../api/mongo");
 //let date = new Date;
 //const fecha = require("./fecha");
 //escribir(data, `./baseDeDatos/${date.getDate()+"-"+fecha}.json`);
@@ -43,35 +46,48 @@ function crearJson(data, path){
 }
 
 //suma una venta al JSON del mes
-function sumarVentas(data, ventas, path){
+async function sumarVentas(data, ventas, path){
+    
     if(ventas != undefined){
      let test = ventas.find( e => e.vendedor == data.vendedor)
-     console.log(test)
+     
      
     if(test != undefined){
+     let server   
      ventas.map( e => {
      if(e.vendedor == data.vendedor){
-         e.monto = e.monto + data.monto;
-         console.log("VENDEDOR " + data.vendedor + " SUMO VENTA: " + e.monto);         
-         return escribir(ventas, path);                            
+         e.monto = e.monto + data.monto;         
+         console.log("VENDEDOR " + data.vendedor + " SUMO VENTA: " + e.monto); 
+         escribir(ventas, path);        
+         server = e                            
         }  
       });
+      return server
     }else{
+     //mongoCRUD.sumarVenta(data);
      ventas.push(data);
      console.log("NUEVO VENDEDOR")
-     return escribir(ventas, path);
+     escribir(ventas, path);
+     return data
         }
-    }else{
+    }else{        
         ventas = [];
         ventas.push(data);
         console.log("NUEVO VENDEDOR")
-        return escribir(ventas, path);
+        escribir(ventas, path);
+        return data
     }
 }
 
 //escritura de archivo
-async function escribir(data, path){   
+async function escribir(data, path, model){   
     await escribirExcel(data, path);
+    
+    // if(model == "diario"){
+    //     await mongoCRUD.guardar(data, model)
+    // }else{
+    //     await mongoCRUD.sumarVenta(data)
+    // }    
     return fs.writeFileSync(`${path}.json`, JSON.stringify(data));
 }
 
