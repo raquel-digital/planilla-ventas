@@ -8,8 +8,8 @@ const middlewares = {
         // if (req.user) return next();
         // res.redirect('/');
         let log = req.body
-        const user = {usuario: "v", contraseña: "v" }
-        const admin = {usuario: "c", contraseña: "c" }
+        const user = {usuario: "raquelmino", contraseña: "local2492" }
+        const admin = {usuario: "capriadmin", contraseña: "capri2665" }
         if(admin.usuario == log.usuario && admin.contraseña == log.contraseña){
             
             adminOk = true;
