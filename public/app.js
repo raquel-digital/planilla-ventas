@@ -1,7 +1,5 @@
-
 // inicializamos la conexion
 const socket = io.connect();
-const socketFunction = io.connect() 
 
 var formulario = document.querySelector(".formulario");
 var montoVenta = document.querySelector(".ingreso-venta");
@@ -18,6 +16,10 @@ global.addEventListener("click", event => {
         let vendedor = mouse.previousElementSibling.previousElementSibling.previousElementSibling;
         let monto = mouse.previousElementSibling;
         ingresarVenta(vendedor.textContent, parseFloat(monto.value))
+    }
+    if(mouse.classList.contains('salir')){
+      console.log("salir")
+      salir()
     }
 })
 
@@ -142,6 +144,10 @@ var myChart = new Chart(
     document.getElementById('myChart'),
     config
   );
+
+  function salir(){
+    socket.emit("salir");
+  }
 
 
 

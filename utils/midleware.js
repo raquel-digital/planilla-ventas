@@ -47,6 +47,11 @@ const middlewares = {
         }else{
             return false;
         }
+    },
+    salir: function () {
+        loginOk = false;
+        adminOk = false;
+        
     }
     
 };

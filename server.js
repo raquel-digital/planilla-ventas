@@ -133,6 +133,11 @@ io.on('connect', socket => {
         socket.emit("ventaDiaria", ventaTemp);
         socket.emit("totalVentas", resultDiarioTotal);        
     });
+
+    socket.on("salir", ()=>{
+        console.log("salir")
+        loginMiddleware.salir();
+    })
 })
 
 app.get("/total", (req, res) => {
