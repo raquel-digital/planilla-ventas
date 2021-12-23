@@ -21,7 +21,9 @@ var data = []; //array de ventas GLOBAL
 var ventaDiaria = [];// array de ventas dia a dia
 var resultDiarioTotal; //total de ventas del dia
 (async () => {
+    let totalVentaDiaria = undefined;
     try{
+        totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
         data = await mongoCRUD.leer(data, "mensual");        
         if(data.length == 0){
             data = await controller.leer(data, `${pathLectura}`);            
@@ -38,7 +40,11 @@ var resultDiarioTotal; //total de ventas del dia
         ventaDiaria = await controller.crearJson(ventaDiaria, `./baseDeDatos/${date.getDate()+"-"+fecha}.json`);        
         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
     }
+    //await mongoCRUD.crearExcel("mensual")
     socketFunction("ventaDiaria", ventaDiaria);
+    let suma = 0
+    if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
+    socketFunction("totalVentas", suma);
 })()
 
 //Iniciamos Web Socket
@@ -82,12 +88,14 @@ app.get('/', loginMiddleware.logged, async (req, res) => {
 });
 
 
-app.get('/fileMes', loginMiddleware.superAdmin,(req, res) => {
+app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
+    await mongoCRUD.crearExcel("mensual")
     let pathLectura = `./baseDeDatos/${fecha}.xls`
     res.download(pathLectura);
     res.status(200);
   });
-  app.get('/fileDia', loginMiddleware.superAdmin,(req, res) => {
+  app.get('/fileDia', loginMiddleware.superAdmin, async (req, res) => {
+    await mongoCRUD.crearExcel("diario")  
     let date =  new Date;
     let pathLectura = `./baseDeDatos/${date.getDate()+"-"+fecha}.xls`
     res.download(pathLectura);

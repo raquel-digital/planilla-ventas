@@ -79,7 +79,7 @@ async function sumaVentaDiario(nuevaVenta, dataGlobal){
        }else{
             nuevaVenta.totalVentadiaria = nuevaVenta.monto;
             console.log("NUEVA VENTA DEL DIA: VENDEDOR: " + nuevaVenta.vendedor + " SUMA: " + nuevaVenta.totalVentadiaria);
-            return nuevaVenta0
+            return nuevaVenta
          }
        }else{
         nuevaVenta.totalVentadiaria = nuevaVenta.monto;        

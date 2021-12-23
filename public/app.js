@@ -30,6 +30,7 @@ socket.on("ventas-realizadas", ventas => {
 })
 
 socket.on("totalVentas", data => {
+    console.log(data)
     document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data}</h1>`;
 })
 
@@ -52,6 +53,9 @@ socket.on("ventaDiaria", ventas => {
         break;
         case "Cristina":
           data.datasets[0].data[4] = venta.totalVentadiaria;
+        break;
+        case "Daniel":
+          data.datasets[0].data[5] = venta.totalVentadiaria;
         break;
       }    
 
@@ -98,25 +102,27 @@ socket.on("admin", () => {
 
 //---BARS GRAPH
 
-const labels = ["Elba", "Santiago", "Juan", "Fabian", "Cristina"];
+const labels = ["Elba", "Santiago", "Juan", "Fabian", "Cristina", "Daniel"];
 let data = {
   labels: labels,
   datasets: [{
     label: 'VENTAS DIARIAS',
-    data: [0, 0, 0, 0, 0],
+    data: [0, 0, 0, 0, 0, 0],
     backgroundColor: [
-      'rgba(251, 244, 212, 0.2)',
+      'rgba(239, 255, 22, 0.2)',
       'rgba(241, 58, 119, 0.2)',
       'rgba(60, 109, 243, 0.2)',
       'rgba(60, 243, 203, 0.2)',
-      'rgba(255, 192, 245, 0.2)'
+      'rgba(255, 192, 245, 0.2)',
+      "rgba(28, 233, 21,0.2)"
     ],
     borderColor: [
-      'rgb(251, 244, 212)',
+      'rgb(239, 255, 22)',
       'rgb(241, 58, 119)',
       'rgb(60, 109, 243)',
       'rgb(60, 243, 203)',
-      'rgb(55, 192, 245)'
+      'rgb(55, 192, 245)',
+      "rgb(28, 233, 21)"
     ],
     borderWidth: 1
   }]

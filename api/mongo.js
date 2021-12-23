@@ -1,6 +1,8 @@
 const ventasDiariaModel = require("../models/ventaDiarias");
 const ventasMesualModel = require("../models/ventasMensual");
-const sumaVentaDiaria = require("../models/totalDeVentaDiaria")
+const sumaVentaDiaria = require("../models/totalDeVentaDiaria");
+let fecha = require("../utils/fecha");
+const writeXlsxFile = require('write-excel-file/node');
 
 class Mongo {
 
@@ -15,9 +17,9 @@ class Mongo {
            if(model == "mensual"){
             base = await ventasMesualModel.find();
            }
-           if(model == "sumaDiaria"){
+           if(model == "totalVentaDiaria"){
             base = await sumaVentaDiaria.find();  
-           }
+           }           
            return base
         }catch(error){
         console.log('Error al leer en Mongo:', base, error);
@@ -100,7 +102,56 @@ class Mongo {
             console.log("ERROR EN: sumarVenta, DATA: " + data + " " + err); 
             
         }
-    }    
+    }
+    
+    async crearExcel(model, path){            
+            try{
+                let data = " ";
+                let path = " ";
+                if(model=="mensual"){
+                    data = await ventasMesualModel.find();
+                    path = `./baseDeDatos/${fecha}`;
+                }
+                if(model=="diario"){
+                    data = await ventasDiariaModel.find();
+                    let date =  new Date;
+                    path = `./baseDeDatos/${date.getDate()+"-"+fecha}`;
+                }
+            let valorTotal = 0;
+            var schema = await [
+                {
+                    column: 'vendedor',
+                    type: String,
+                    value: data => data.vendedor            
+                },
+                {
+                    column: 'monto',
+                    type: Number,
+                    value: data => data.monto
+                },                
+                {
+                    column: 'fecha',
+                    type: String,
+                    value: data => data.fecha
+                },
+                {
+                    column: "valor total",
+                    type: Number,
+                    value: data => valorTotal += data.monto
+                }
+            ]
+          
+            await writeXlsxFile(data, {
+                schema,
+                filePath: `${path}.xls`
+            })
+            return;
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+    
 }    
 
 
