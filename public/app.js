@@ -43,38 +43,38 @@ socket.on("totalVentas", data => {
     document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data}</h1>`;
 })
 
-socket.on("ventaDiaria", ventas => {
-    for(venta of ventas){ 
-    let suma = document.querySelector("." + venta.vendedor);
-        suma.textContent = `${venta.totalVentadiaria}`;
-    switch(venta.vendedor){
-        case "Elba":
-          data.datasets[0].data[0] = venta.totalVentadiaria;
-        break;
-        case "Santiago":
-          data.datasets[0].data[1] = venta.totalVentadiaria;
-        break;
-        case "Juan":
-          data.datasets[0].data[2] = venta.totalVentadiaria;
-        break;
-        case "Fabian":
-          data.datasets[0].data[3] = venta.totalVentadiaria;
-        break;
-        case "Cristina":
-          data.datasets[0].data[4] = venta.totalVentadiaria;
-        break;
-        case "Daniel":
-          data.datasets[0].data[5] = venta.totalVentadiaria;
-        break;
-      }    
+// socket.on("ventaDiaria", ventas => {
+//     for(venta of ventas){ 
+//     let suma = document.querySelector("." + venta.vendedor);
+//         suma.textContent = `${venta.totalVentadiaria}`;
+//     switch(venta.vendedor){
+//         case "Elba":
+//           data.datasets[0].data[0] = venta.totalVentadiaria;
+//         break;
+//         case "Santiago":
+//           data.datasets[0].data[1] = venta.totalVentadiaria;
+//         break;
+//         case "Juan":
+//           data.datasets[0].data[2] = venta.totalVentadiaria;
+//         break;
+//         case "Fabian":
+//           data.datasets[0].data[3] = venta.totalVentadiaria;
+//         break;
+//         case "Cristina":
+//           data.datasets[0].data[4] = venta.totalVentadiaria;
+//         break;
+//         case "Daniel":
+//           data.datasets[0].data[5] = venta.totalVentadiaria;
+//         break;
+//       }    
 
-    }
+//     }
     // myChart.destroy()
     // myChart = new Chart(
     //   document.getElementById('myChart'),
     //   config
     // );    
-})
+//})
 
 function ingresarVenta(vendedor, monto){
     let fecha = new Date().toLocaleString();
