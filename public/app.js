@@ -8,6 +8,13 @@ var observaciones = document.querySelector(".observaciones");
 var dropdown =  document.querySelector(".vendedoresDropdown");
 var report = document.querySelector(".report");
 var global = document.querySelector(".global");
+var mayorista = document.querySelector(".sectorVendedores");
+
+socket.on("mayorista", () => {
+  mayorista.innerHTML = `
+    ${vendedoresMayorista}
+  `;
+})
 
 
 global.addEventListener("click", event => {
@@ -62,11 +69,11 @@ socket.on("ventaDiaria", ventas => {
       }    
 
     }
-    myChart.destroy()
-    myChart = new Chart(
-      document.getElementById('myChart'),
-      config
-    );    
+    // myChart.destroy()
+    // myChart = new Chart(
+    //   document.getElementById('myChart'),
+    //   config
+    // );    
 })
 
 function ingresarVenta(vendedor, monto){
@@ -104,50 +111,95 @@ socket.on("admin", () => {
 
 //---BARS GRAPH
 
-const labels = ["Elba", "Santiago", "Juan", "Fabian", "Cristina", "Daniel"];
-let data = {
-  labels: labels,
-  datasets: [{
-    label: 'VENTAS DIARIAS',
-    data: [0, 0, 0, 0, 0, 0],
-    backgroundColor: [
-      'rgba(239, 255, 22, 0.2)',
-      'rgba(241, 58, 119, 0.2)',
-      'rgba(60, 109, 243, 0.2)',
-      'rgba(60, 243, 203, 0.2)',
-      'rgba(255, 192, 245, 0.2)',
-      "rgba(28, 233, 21,0.2)"
-    ],
-    borderColor: [
-      'rgb(239, 255, 22)',
-      'rgb(241, 58, 119)',
-      'rgb(60, 109, 243)',
-      'rgb(60, 243, 203)',
-      'rgb(55, 192, 245)',
-      "rgb(28, 233, 21)"
-    ],
-    borderWidth: 1
-  }]
-};
-let config = {
-  type: 'bar',
-  data: data,
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  },
-};
-var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
+// const labels = ["Elba", "Santiago", "Juan", "Fabian", "Cristina", "Daniel"];
+// let data = {
+//   labels: labels,
+//   datasets: [{
+//     label: 'VENTAS DIARIAS',
+//     data: [0, 0, 0, 0, 0, 0],
+//     backgroundColor: [
+//       'rgba(239, 255, 22, 0.2)',
+//       'rgba(241, 58, 119, 0.2)',
+//       'rgba(60, 109, 243, 0.2)',
+//       'rgba(60, 243, 203, 0.2)',
+//       'rgba(255, 192, 245, 0.2)',
+//       "rgba(28, 233, 21,0.2)"
+//     ],
+//     borderColor: [
+//       'rgb(239, 255, 22)',
+//       'rgb(241, 58, 119)',
+//       'rgb(60, 109, 243)',
+//       'rgb(60, 243, 203)',
+//       'rgb(55, 192, 245)',
+//       "rgb(28, 233, 21)"
+//     ],
+//     borderWidth: 1
+//   }]
+// };
+// let config = {
+//   type: 'bar',
+//   data: data,
+//   options: {
+//     scales: {
+//       y: {
+//         beginAtZero: true
+//       }
+//     }
+//   },
+// };
+// var myChart = new Chart(
+//     document.getElementById('myChart'),
+//     config
+//   );
 
   function salir(){
     socket.emit("salir");
   }
 
+const vendedoresMayorista = `<div class="col-4" style="background-color: rgb(239, 255, 22);">
+<b>Elba</b>
+<p>monto venta:</p>
+<input class="monto" type="number"> 
+<button class="btn btn-success center venta">Confirmar</button>
+<p>Total venta diaria: </p><p class="Elba"></p> 
+</div>
+<hr>
+<div class="col-4" style="background-color: rgb(241, 58, 119);">
+<b>Santiago</b>
+<p>monto venta:</p>
+<input class="monto" type="number"> 
+<button class="btn btn-success center venta">Confirmar</button>
+<p>Total venta diaria: </p><p class="Santiago"></p>  
+</div>
+<hr>
+<div class="col-4 " style="background-color:rgb(90, 132, 250)">
+<b>Juan</b>
+<p>monto venta:</p>
+<input class="monto" type="number"> 
+<button class="btn btn-success center venta">Confirmar</button> 
+<p>Total venta diaria: </p><p class="Juan"></p> 
+</div>
+<hr>
+<div class="col-4 " style="background-color:rgb(125, 250, 208)">
+<b>Fabian</b>
+<p>monto venta:</p>
+<input class="monto" type="number"> 
+<button class="btn btn-success center venta">Confirmar</button>
+<p>Total venta diaria: </p><p class="Fabian"></p>  
+</div>
+
+<div class="col-4 " style="background-color:rgb(255, 192, 245)">
+<b>Cristina</b>
+<p>monto venta:</p>    
+<input class="monto" type="number"><button class="btn btn-success center venta">Confirmar</button>   
+<p>Total venta diaria: </p><p class="Cristina"></p> 
+</div>
+
+<div class="col-4 " style="background-color:rgb(28, 233, 21)">
+<b>Daniel</b>
+<p>monto venta:</p>    
+<input class="monto" type="number"><button class="btn btn-success center venta">Confirmar</button>   
+<p>Total venta diaria: </p><p class="Daniel"></p> 
+</div>`;  
 
 
