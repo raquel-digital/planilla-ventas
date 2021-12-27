@@ -23,6 +23,7 @@ global.addEventListener("click", event => {
         let vendedor = mouse.previousElementSibling.previousElementSibling.previousElementSibling;
         let monto = mouse.previousElementSibling;
         ingresarVenta(vendedor.textContent, parseFloat(monto.value))
+        monto.value = " ";
     }
     if(mouse.classList.contains('salir')){
       console.log("salir")
@@ -86,10 +87,10 @@ function ingresarVenta(vendedor, monto){
     let confirm = window.confirm(vendedor + " vendio: $ " + monto + " fecha: " + fecha)
     if(confirm){
         report.innerHTML += `<tr><td>${vendedor}</td><td>${monto}</td><td>${fecha}</td></tr>`
-        let borrarMonto = document.querySelectorAll(".monto");
-        borrarMonto.forEach( m => {
-            m.value = " ";
-        })
+        // let borrarMonto = document.querySelectorAll(".monto");
+        // borrarMonto.forEach( m => {
+        //     m.value = " ";
+        // })
         socket.emit('nueva-venta', venta);
         return;
     }else{
