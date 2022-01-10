@@ -32,6 +32,7 @@ var resultDiarioTotal; //total de ventas del dia
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
         if(ventaDiaria.length == 0)        
         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
+    
     }catch(err){
         console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
         data = await controller.crearJson(data, `./baseDeDatos/${fecha}.json`);
@@ -58,6 +59,7 @@ const { json } = require('express');
 const { async } = require('rxjs');
 const { nextTick, mainModule } = require('process');
 const { watchOptions } = require('nodemon/lib/config/defaults');
+const req = require('express/lib/request');
 app.engine('hbs', handlebars({
     extname: '.hbs',//extension
     defaultLayout: 'index.hbs',//pagina por defecto
@@ -101,6 +103,20 @@ app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
     res.download(pathLectura);
     res.status(200);
   });
+
+  app.get("/mes-anterior/:dia/:mes/:anio", async (req, res) => {
+    //res.render("buscarDatos")
+    const buscar = require("./models/buscarModel")
+    const param = {dia: req.params.dia, mes:req.params.mes, anio: req.params.anio}
+    const result = await buscar(param.dia+"-"+param.mes+"-"+param.anio)
+    res.send(`<h1>TOTAL DE VENTA DIA ${param.dia+"-"+param.mes+"-"+param.anio}</h1> 
+    <h1>MONTO: ${result[0].totalVentadiaria}</h1>
+    `)
+  })
+  app.post("/buscar-dato", loginMiddleware.superAdmin, async (req, res) => {
+    fecha = req.body;
+
+  })
 
 let socketFunction = ((string, data) => {
     io.on('connect', socket => {
