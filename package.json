@@ -2,7 +2,7 @@
   "name": "planilla-ventas-minorista",
   "version": "3.0.0",
   "description": "planilla para completar ventas del dia",
-  "main": "server.js",
+  "main": "nodemon server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./server.js"
