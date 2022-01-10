@@ -105,13 +105,18 @@ app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
   });
 
   app.get("/mes-anterior/:dia/:mes/:anio", async (req, res) => {
-    //res.render("buscarDatos")
+    try{
+        //res.render("buscarDatos")
     const buscar = require("./models/buscarModel")
     const param = {dia: req.params.dia, mes:req.params.mes, anio: req.params.anio}
     const result = await buscar(param.dia+"-"+param.mes+"-"+param.anio)
     res.send(`<h1>TOTAL DE VENTA DIA ${param.dia+"-"+param.mes+"-"+param.anio}</h1> 
     <h1>MONTO: ${result[0].totalVentadiaria}</h1>
-    `)
+    `)}catch(err){
+        console.log("fallo la ruta [MES ANTERIOR] " + err)
+        res.send("BASE DE DATOS INEXISTENTE")
+    }
+    
   })
   app.post("/buscar-dato", loginMiddleware.superAdmin, async (req, res) => {
     fecha = req.body;
