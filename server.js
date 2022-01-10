@@ -16,6 +16,7 @@ let pathLectura = `../baseDeDatos/${fecha}.json`;
 const dotenv = require('dotenv').config();
 //MIDLEWARE
 const loginMiddleware = require("./utils/midleware");
+const buscar = require("./models/buscarModel")
  
 var data = []; //array de ventas GLOBAL
 var ventaDiaria = [];// array de ventas dia a dia
@@ -106,8 +107,7 @@ app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
 
   app.get("/mes-anterior/:dia/:mes/:anio", async (req, res) => {
     try{
-        //res.render("buscarDatos")
-    const buscar = require("./models/buscarModel")
+        //res.render("buscarDatos")    
     const param = {dia: req.params.dia, mes:req.params.mes, anio: req.params.anio}
     const result = await buscar(param.dia+"-"+param.mes+"-"+param.anio)
     res.send(`<h1>TOTAL DE VENTA DIA ${param.dia+"-"+param.mes+"-"+param.anio}</h1> 
