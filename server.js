@@ -16,7 +16,7 @@ let pathLectura = `../baseDeDatos/${fecha}.json`;
 const dotenv = require('dotenv').config();
 //MIDLEWARE
 const loginMiddleware = require("./utils/midleware");
-const buscar = require("./models/buscarModel")
+let buscar = require("./models/buscarModel")
  
 var data = []; //array de ventas GLOBAL
 var ventaDiaria = [];// array de ventas dia a dia
@@ -33,7 +33,6 @@ var resultDiarioTotal; //total de ventas del dia
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
         if(ventaDiaria.length == 0)        
         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
-    
     }catch(err){
         console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
         data = await controller.crearJson(data, `./baseDeDatos/${fecha}.json`);
@@ -60,7 +59,6 @@ const { json } = require('express');
 const { async } = require('rxjs');
 const { nextTick, mainModule } = require('process');
 const { watchOptions } = require('nodemon/lib/config/defaults');
-const req = require('express/lib/request');
 app.engine('hbs', handlebars({
     extname: '.hbs',//extension
     defaultLayout: 'index.hbs',//pagina por defecto
@@ -104,7 +102,6 @@ app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
     res.download(pathLectura);
     res.status(200);
   });
-
   app.get("/mes-anterior/:dia/:mes/:anio", async (req, res) => {
     try{
         //res.render("buscarDatos")    
@@ -116,12 +113,7 @@ app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
         console.log("fallo la ruta [MES ANTERIOR] " + err)
         res.send("BASE DE DATOS INEXISTENTE")
     }
-    
-  })
-  app.post("/buscar-dato", loginMiddleware.superAdmin, async (req, res) => {
-    fecha = req.body;
-
-  })
+})
 
 let socketFunction = ((string, data) => {
     io.on('connect', socket => {
@@ -176,3 +168,8 @@ http.listen(PORT, () => {
 http.on('error', error => {
     console.log('error en el servidor:', error);
 });
+
+
+
+
+  
