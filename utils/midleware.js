@@ -36,10 +36,10 @@ const middlewares = {
     superAdmin : function (req, res, next){
         if(adminOk){
             next()
-      }else{
-          res.redirect('/login')
-          return next();
-      }
+        }else{
+           res.redirect('/login')
+            return next();
+        }
     },
     superAdminCheck : function () {
         if(adminOk){
@@ -51,7 +51,6 @@ const middlewares = {
     salir: function () {
         loginOk = false;
         adminOk = false;
-        
     }
     
 };

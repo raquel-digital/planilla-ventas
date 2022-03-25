@@ -25,6 +25,9 @@ var resultDiarioTotal; //total de ventas del dia
     let totalVentaDiaria = undefined;
     try{
         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+        // if(totalVentaDiaria.length == 0){
+        //     totalVentaDiaria = await mongoCRUD.guardar(totalVentaDiaria, "totalVentaDiaria");  
+        // }
         data = await mongoCRUD.leer(data, "mensual");        
         if(data.length == 0){
             data = await controller.leer(data, `${pathLectura}`);            
@@ -33,6 +36,10 @@ var resultDiarioTotal; //total de ventas del dia
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
         if(ventaDiaria.length == 0)        
         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
+        //  if(totalVentaDiaria.length == 0){
+        //     totalVentaDiaria = await mongoCRUD.guardar(totalVentaDiaria, "sumaDiaria");  
+        // }
+        
     }catch(err){
         console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
         data = await controller.crearJson(data, `./baseDeDatos/${fecha}.json`);
@@ -44,7 +51,9 @@ var resultDiarioTotal; //total de ventas del dia
     //await mongoCRUD.crearExcel("mensual")
     socketFunction("ventaDiaria", ventaDiaria);
     let suma = 0
-    if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
+    // if(totalVentaDiaria != undefined){
+    //     suma = totalVentaDiaria[0].totalVentadiaria 
+    // }
     socketFunction("totalVentas", suma);
 })()
 
@@ -79,7 +88,7 @@ app.get('/login', (req, res) => {
 
 app.post('/singup', loginMiddleware.isLogin);
 
-app.get('/', loginMiddleware.logged, async (req, res) => {
+app.get('/', async (req, res) => {
     const admin = loginMiddleware.superAdminCheck
     const bool = admin()
     if(bool){
@@ -93,14 +102,14 @@ app.get('/fileMes', loginMiddleware.superAdmin, async (req, res) => {
     await mongoCRUD.crearExcel("mensual")
     let pathLectura = `./baseDeDatos/${fecha}.xls`
     res.download(pathLectura);
-    res.status(200);
+    //res.status(200);
   });
   app.get('/fileDia', loginMiddleware.superAdmin, async (req, res) => {
     await mongoCRUD.crearExcel("diario")  
     let date =  new Date;
     let pathLectura = `./baseDeDatos/${date.getDate()+"-"+fecha}.xls`
     res.download(pathLectura);
-    res.status(200);
+    //res.status(200);
   });
   app.get("/mes-anterior/:dia/:mes/:anio", async (req, res) => {
     try{

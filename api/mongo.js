@@ -9,7 +9,6 @@ class Mongo {
     constructor() {}
     
    async leer(base, model) {
-        
        try{
            if(model == "diaria"){
             base = await ventasDiariaModel.find();                     
@@ -18,11 +17,11 @@ class Mongo {
             base = await ventasMesualModel.find();
            }
            if(model == "totalVentaDiaria"){
-            base = await sumaVentaDiaria.find();  
+            base = await sumaVentaDiaria.find();
            }           
            return base
         }catch(error){
-        console.log('Error al leer en Mongo:', base, error);
+            console.log('Error al leer en Mongo:', base, error);
         } 
     }
 
@@ -51,6 +50,9 @@ class Mongo {
 
     async guardar(data, model) {    
         try{
+            if(model == "totalVentaDiaria"){
+                data = await sumaVentaDiaria.create();
+            } 
             if(model == "diario")            
             await ventasDiariaModel.create(data);
             if(model == "mensual")
