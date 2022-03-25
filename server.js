@@ -25,9 +25,7 @@ var resultDiarioTotal; //total de ventas del dia
     let totalVentaDiaria = undefined;
     try{
         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
-        // if(totalVentaDiaria.length == 0){
-        //     totalVentaDiaria = await mongoCRUD.guardar(totalVentaDiaria, "totalVentaDiaria");  
-        // }
+        
         data = await mongoCRUD.leer(data, "mensual");        
         if(data.length == 0){
             data = await controller.leer(data, `${pathLectura}`);            
@@ -36,9 +34,6 @@ var resultDiarioTotal; //total de ventas del dia
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
         if(ventaDiaria.length == 0)        
         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
-        //  if(totalVentaDiaria.length == 0){
-        //     totalVentaDiaria = await mongoCRUD.guardar(totalVentaDiaria, "sumaDiaria");  
-        // }
         
     }catch(err){
         console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
@@ -51,9 +46,9 @@ var resultDiarioTotal; //total de ventas del dia
     //await mongoCRUD.crearExcel("mensual")
     socketFunction("ventaDiaria", ventaDiaria);
     let suma = 0
-    // if(totalVentaDiaria != undefined){
-    //     suma = totalVentaDiaria[0].totalVentadiaria 
-    // }
+    if(totalVentaDiaria != undefined){
+        suma = totalVentaDiaria[0].totalVentadiaria 
+    }
     socketFunction("totalVentas", suma);
 })()
 
@@ -68,6 +63,7 @@ const { json } = require('express');
 const { async } = require('rxjs');
 const { nextTick, mainModule } = require('process');
 const { watchOptions } = require('nodemon/lib/config/defaults');
+const req = require('express/lib/request');
 app.engine('hbs', handlebars({
     extname: '.hbs',//extension
     defaultLayout: 'index.hbs',//pagina por defecto
@@ -86,9 +82,11 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.post('/singup', loginMiddleware.isLogin);
+app.post('/singup', loginMiddleware.isLogin, (req, res) => {
+    res.redirect("/")
+});
 
-app.get('/', async (req, res) => {
+app.get('/', loginMiddleware.logged, async (req, res) => {
     const admin = loginMiddleware.superAdminCheck
     const bool = admin()
     if(bool){
