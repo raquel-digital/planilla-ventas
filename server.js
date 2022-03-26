@@ -21,8 +21,9 @@ let buscar = require("./models/buscarModel")
 var data = []; //array de ventas GLOBAL
 var ventaDiaria = [];// array de ventas dia a dia
 var resultDiarioTotal; //total de ventas del dia
+let totalVentaDiaria = 0;
+
 (async () => {
-    let totalVentaDiaria = undefined;
     try{
         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
         
