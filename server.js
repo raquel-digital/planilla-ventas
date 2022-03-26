@@ -47,7 +47,8 @@ let totalVentaDiaria = 0;
     //await mongoCRUD.crearExcel("mensual")
     socketFunction("ventaDiaria", ventaDiaria);
     let suma = 0
-    if(totalVentaDiaria[0].totalVentadiaria != undefined){
+    if(totalVentaDiaria[0].totalVentadiaria != null){
+        console.log(totalVentaDiaria[0].totalVentadiaria)
         suma = totalVentaDiaria[0].totalVentadiaria 
     }else{
         suma = totalVentaDiaria;   
@@ -155,7 +156,11 @@ io.on('connect', socket => {
         ventaTemp.push(resultDiario)
         let totalVentaDiaria = undefined;
         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
-        if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
+        if(totalVentaDiaria != null){ 
+            suma = totalVentaDiaria[0].totalVentadiaria 
+        }else{
+            suma = totalVentaDiaria;   
+        }
         socketFunction("totalVentas", suma);
         socket.emit("ventaDiaria", ventaTemp);
         socket.emit("totalVentas", resultDiarioTotal);        
