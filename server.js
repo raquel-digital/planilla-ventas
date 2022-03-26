@@ -47,8 +47,10 @@ let totalVentaDiaria = 0;
     //await mongoCRUD.crearExcel("mensual")
     socketFunction("ventaDiaria", ventaDiaria);
     let suma = 0
-    if(totalVentaDiaria != undefined){
+    if(totalVentaDiaria[0].totalVentadiaria != undefined){
         suma = totalVentaDiaria[0].totalVentadiaria 
+    }else{
+        suma = totalVentadiaria;   
     }
     socketFunction("totalVentas", suma);
 })()
