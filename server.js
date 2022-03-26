@@ -50,7 +50,7 @@ let totalVentaDiaria = 0;
     if(totalVentaDiaria[0].totalVentadiaria != undefined){
         suma = totalVentaDiaria[0].totalVentadiaria 
     }else{
-        suma = totalVentadiaria;   
+        suma = totalVentaDiaria;   
     }
     socketFunction("totalVentas", suma);
 })()
