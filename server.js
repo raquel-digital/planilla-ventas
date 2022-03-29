@@ -134,7 +134,7 @@ io.on('connect', socket => {
         //let totalVentaDiaria = undefined;
         //totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
         //if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
-        socketFunction("totalVentas", suma);
+        //socketFunction("totalVentas", suma);
         socket.emit("ventaDiaria", ventaTemp);
         socket.emit("totalVentas", resultDiarioTotal);        
     });
