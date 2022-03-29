@@ -118,6 +118,12 @@ io.on('connect', socket => {
     if(data != null){        
         socket.emit("ventas-realizadas", ventaDiaria)
     }
+    (async () => { resultDiarioTotal = await mongoCRUD.leer(resultDiarioTotal, "totalVentaDiaria"); 
+     })();
+
+    if(resultDiarioTotal){
+        socket.emit("totalVentas-inicio", resultDiarioTotal);
+    }
     
     socket.on('nueva-venta', async nuevaVenta => {
         nuevaVenta.monto = parseFloat(nuevaVenta.monto);
@@ -136,6 +142,7 @@ io.on('connect', socket => {
         //if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
         //socketFunction("totalVentas", suma);
         socket.emit("ventaDiaria", ventaTemp);
+        resultDiarioTotal = await mongoCRUD.leer(resultDiarioTotal, "totalVentaDiaria")
         socket.emit("totalVentas", resultDiarioTotal);        
     });
 

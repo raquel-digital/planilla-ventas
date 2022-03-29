@@ -38,7 +38,9 @@ socket.on("ventas-realizadas", ventas => {
         report.innerHTML +=  `<tr><td>${v.vendedor}</td><td>${v.monto}</td><td>${v.fecha}</td></tr>`//`<li">fecha: ${v.fecha} vendio: ${v.vendedor} monto: ${v.monto}</li>`
     })
 })
-
+socket.on("totalVentas-inicio", data => {
+  document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
+})
 socket.on("totalVentas", data => {
     console.log(data)
     document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data}</h1>`;
