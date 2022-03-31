@@ -44,7 +44,7 @@ socket.on("totalVentas-inicio", data => {
 })
 socket.on("totalVentas", data => {
     
-    document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
+    document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${totalVentadiaria}</h1>`;
 })
 
 socket.on("ventaDiaria", ventas => {
