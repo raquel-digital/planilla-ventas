@@ -22,8 +22,8 @@ global.addEventListener("click", event => {
     if(mouse.classList.contains('venta')){
         let vendedor = mouse.previousElementSibling.previousElementSibling.previousElementSibling;
         let monto = mouse.previousElementSibling;
-        ingresarVenta(vendedor.textContent, parseFloat(monto.value))
-        monto.value = " ";
+        ingresarVenta(vendedor.textContent, parseInt(monto.value))
+        //monto.value = " ";
     }
     if(mouse.classList.contains('salir')){
       console.log("salir")
@@ -43,8 +43,8 @@ socket.on("totalVentas-inicio", data => {
   document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
 })
 socket.on("totalVentas", data => {
-    
-    document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${totalVentadiaria}</h1>`;
+    console.log(data)
+    document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
 })
 
 socket.on("ventaDiaria", ventas => {
