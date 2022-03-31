@@ -128,6 +128,17 @@ let socketFunction = ((string, data) => {
 //WEBSOCKET
 io.on('connect', socket => {
     console.log('nueva conexion');
+    (async () => {
+        try{
+            totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+            socketFunction("totalVentas", totalVentaDiaria)
+            data = await mongoCRUD.leer(data, "mensual");
+            ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
+            socketFunction("ventaDiaria", ventaDiaria);
+        }catch(e){
+            console.log(e)
+        }
+    })()
     if(ventaDiaria != null){        
         socket.emit("ventas-realizadas", ventaDiaria)
         socket.emit("ventaDiaria", ventaDiaria);
