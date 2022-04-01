@@ -18,6 +18,10 @@ class Mongo {
            }
            if(model == "totalVentaDiaria"){
             base = await sumaVentaDiaria.find();
+            if(base.length == 0){
+                base = await sumaVentaDiaria.create();
+                base = await sumaVentaDiaria.find();
+            }
            }           
            return base
         }catch(error){
