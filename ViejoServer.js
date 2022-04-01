@@ -16,34 +16,48 @@ const dotenv = require('dotenv').config();
 //MIDLEWARE
 const loginMiddleware = require("./utils/midleware");
  
-var data = []; //array de ventas GLOBAL
-var ventaDiaria = [];// array de ventas dia a dia
+var data; //array de ventas GLOBAL
+var ventaDiaria;// array de ventas dia a dia
 var resultDiarioTotal; //total de ventas del dia
+var totalVentaDiaria; //test
+// (async () => {
+//     let totalVentaDiaria = undefined;
+//     try{
+//         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+//         data = await mongoCRUD.leer(data, "mensual");        
+//         if(data.length == 0){
+//             data = await controller.leer(data, `${pathLectura}`);            
+//         }        
+//         let date =  new Date;
+//         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
+//         if(ventaDiaria.length == 0)        
+//         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
+//     }catch(err){
+//         console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
+//         data = await controller.crearJson(data, `./baseDeDatos/${fecha}.json`);
+//         data = await controller.leer(data, `${pathLectura}`);
+//         let date =  new Date;
+//         ventaDiaria = await controller.crearJson(ventaDiaria, `./baseDeDatos/${date.getDate()+"-"+fecha}.json`);        
+//         ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
+//     }
+//     //await mongoCRUD.crearExcel("mensual")
+//     socketFunction("ventaDiaria", ventaDiaria);
+//     let suma = 0
+//     //if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
+//     socketFunction("totalVentas", suma);
+// })()
+
 (async () => {
-    let totalVentaDiaria = undefined;
     try{
         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
-        data = await mongoCRUD.leer(data, "mensual");        
-        if(data.length == 0){
-            data = await controller.leer(data, `${pathLectura}`);            
-        }        
-        let date =  new Date;
+        socketFunction("totalVentas", totalVentaDiaria)
+        data = await mongoCRUD.leer(data, "mensual");
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
-        if(ventaDiaria.length == 0)        
-        ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
-    }catch(err){
-        console.log(`BASE DE DATOS NO ENCONTRADA. CREANDO BASE DE DATOS FECHA:  ${fecha}`);
-        data = await controller.crearJson(data, `./baseDeDatos/${fecha}.json`);
-        data = await controller.leer(data, `${pathLectura}`);
-        let date =  new Date;
-        ventaDiaria = await controller.crearJson(ventaDiaria, `./baseDeDatos/${date.getDate()+"-"+fecha}.json`);        
-        ventaDiaria = await controller.leer(ventaDiaria, `../baseDeDatos/${date.getDate()+"-"+fecha}.json`);
+        socketFunction("ventaDiaria", ventaDiaria);
+        console.log(totalVentaDiaria)
+    }catch(e){
+        console.log(e)
     }
-    //await mongoCRUD.crearExcel("mensual")
-    socketFunction("ventaDiaria", ventaDiaria);
-    let suma = 0
-    //if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
-    socketFunction("totalVentas", suma);
 })()
 
 //Iniciamos Web Socket
@@ -115,10 +129,25 @@ let socketFunction = ((string, data) => {
 //WEBSOCKET
 io.on('connect', socket => {
     console.log('nueva conexion');
-    if(data != null){        
-        socket.emit("ventas-realizadas", ventaDiaria)
-    }
+    socket.on("ready", () =>{
+        (async () => {
+            try{
+                totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+                socketFunction("totalVentas", totalVentaDiaria)
+                data = await mongoCRUD.leer(data, "mensual");
+                ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
+                socketFunction("ventaDiaria", ventaDiaria);
+                console.log(totalVentaDiaria)
+            }catch(e){
+                console.log(e)
+            }
+        })()      
+    })
     
+    if(ventaDiaria != null){        
+        socket.emit("ventas-realizadas", ventaDiaria)
+        socket.emit("ventaDiaria", ventaDiaria);
+    }
     socket.on('nueva-venta', async nuevaVenta => {
         nuevaVenta.monto = parseFloat(nuevaVenta.monto);
         let date =  new Date;        
@@ -134,8 +163,10 @@ io.on('connect', socket => {
         //let totalVentaDiaria = undefined;
         //totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
         //if(totalVentaDiaria != undefined){ suma = totalVentaDiaria[0].totalVentadiaria }
-        socketFunction("totalVentas", suma);
+        //socketFunction("totalVentas", suma);
         socket.emit("ventaDiaria", ventaTemp);
+        resultDiarioTotal = await mongoCRUD.leer(resultDiarioTotal, "totalVentaDiaria")
+        console.log(resultDiarioTotal)
         socket.emit("totalVentas", resultDiarioTotal);        
     });
 

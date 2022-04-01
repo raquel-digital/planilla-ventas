@@ -50,11 +50,17 @@ var totalVentaDiaria; //test
 (async () => {
     try{
         totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+        console.log("1 read "+totalVentaDiaria)
+        if(totalVentaDiaria[0].totalVentadiaria == undefined){
+            await mongoCRUD.createVentadiaria();
+            totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+            console.log("init "+totalVentaDiaria)
+        }
         socketFunction("totalVentas", totalVentaDiaria)
         data = await mongoCRUD.leer(data, "mensual");
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
         socketFunction("ventaDiaria", ventaDiaria);
-        console.log(totalVentaDiaria)
+        
     }catch(e){
         console.log(e)
     }
@@ -71,6 +77,7 @@ const { json } = require('express');
 const { async } = require('rxjs');
 const { nextTick, mainModule } = require('process');
 const { watchOptions } = require('nodemon/lib/config/defaults');
+const { Mongoose } = require('mongoose');
 app.engine('hbs', handlebars({
     extname: '.hbs',//extension
     defaultLayout: 'index.hbs',//pagina por defecto
@@ -133,11 +140,17 @@ io.on('connect', socket => {
         (async () => {
             try{
                 totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
-                socketFunction("totalVentas", totalVentaDiaria)
+                console.log("2 read "+totalVentaDiaria)
+                if(totalVentaDiaria[0].totalVentadiaria == undefined){
+                    await mongoCRUD.createVentadiaria();
+                    totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+                    console.log("ready "+ totalVentaDiaria)
+                }
+                socket.emit("totalVentas", totalVentaDiaria)
                 data = await mongoCRUD.leer(data, "mensual");
                 ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
-                socketFunction("ventaDiaria", ventaDiaria);
-                console.log(totalVentaDiaria)
+                socket.emit("ventaDiaria", ventaDiaria);
+                
             }catch(e){
                 console.log(e)
             }
