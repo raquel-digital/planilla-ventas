@@ -10,8 +10,5 @@ const schema = mongoose.Schema({
 });
 
 const ventas = mongoose.model(`${date.getDate()+"-"+fecha}`, schema);
-// (async ()=>{
-//     const find = await ventas.find()
-//     console.log(find)
-// })()
+
 module.exports = ventas;

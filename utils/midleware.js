@@ -8,19 +8,18 @@ const middlewares = {
         // if (req.user) return next();
         // res.redirect('/');
         let log = req.body
-        const user = {usuario: "raquelmino", contraseña: "local2492" }
+        const user = {usuario: "raquelmayo", contraseña: "local2665" }
         const admin = {usuario: "capriadmin", contraseña: "capri2665" }
-        if(admin.usuario == log.usuario && admin.contraseña == log.contraseña){
+        if(admin.usuario == log.usuario && admin.contraseña == log.contraseña ){
             
             adminOk = true;
-           return next()
+            return next()
         }
         if(user.usuario == log.usuario && user.contraseña == log.contraseña){
             loginOk = true;
-              
-              return next()
+            return next()
         }else{
-            res.redirect('/login')
+            return  res.redirect('/login');
         } 
     },
     logged : function (req, res, next) {
@@ -34,10 +33,10 @@ const middlewares = {
     superAdmin : function (req, res, next){
         if(adminOk){
             next()
-        }else{
-           res.redirect('/login')
-            return next();
-        }
+      }else{
+          res.redirect('/login')
+          return next();
+      }
     },
     superAdminCheck : function () {
         if(adminOk){
@@ -49,6 +48,7 @@ const middlewares = {
     salir: function () {
         loginOk = false;
         adminOk = false;
+        
     }
     
 };

@@ -54,7 +54,6 @@ var totalVentaDiaria; //test
         data = await mongoCRUD.leer(data, "mensual");
         ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
         socketFunction("ventaDiaria", ventaDiaria);
-        console.log(totalVentaDiaria)
     }catch(e){
         console.log(e)
     }
@@ -129,21 +128,17 @@ let socketFunction = ((string, data) => {
 //WEBSOCKET
 io.on('connect', socket => {
     console.log('nueva conexion');
-    socket.on("ready", () =>{
-        (async () => {
-            try{
-                totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
-                socketFunction("totalVentas", totalVentaDiaria)
-                data = await mongoCRUD.leer(data, "mensual");
-                ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
-                socketFunction("ventaDiaria", ventaDiaria);
-                console.log(totalVentaDiaria)
-            }catch(e){
-                console.log(e)
-            }
-        })()      
-    })
-    
+    (async () => {
+        try{
+            totalVentaDiaria = await mongoCRUD.leer(totalVentaDiaria, "totalVentaDiaria");
+            socket.emit("totalVentas", totalVentaDiaria)
+            data = await mongoCRUD.leer(data, "mensual");
+            ventaDiaria = await mongoCRUD.leer(ventaDiaria, "diaria");
+            socket.emit("ventaDiaria", ventaDiaria);
+        }catch(e){
+            console.log(e)
+        }
+    })()
     if(ventaDiaria != null){        
         socket.emit("ventas-realizadas", ventaDiaria)
         socket.emit("ventaDiaria", ventaDiaria);
@@ -166,7 +161,6 @@ io.on('connect', socket => {
         //socketFunction("totalVentas", suma);
         socket.emit("ventaDiaria", ventaTemp);
         resultDiarioTotal = await mongoCRUD.leer(resultDiarioTotal, "totalVentaDiaria")
-        console.log(resultDiarioTotal)
         socket.emit("totalVentas", resultDiarioTotal);        
     });
 

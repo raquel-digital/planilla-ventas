@@ -10,8 +10,6 @@ var report = document.querySelector(".report");
 var global = document.querySelector(".global");
 var mayorista = document.querySelector(".sectorVendedores");
 
-socket.emit("ready")
-
 socket.on("mayorista", () => {
   mayorista.innerHTML = `
     ${vendedoresMayorista}
@@ -42,21 +40,12 @@ socket.on("ventas-realizadas", ventas => {
     })
 })
 socket.on("totalVentas-inicio", data => {
-  if(data.lenght > 0){
-    console.log(data)
-    if(data[0].totalVentadiaria == undefined){
-      document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: 0</h1>`;
-    }else{
-    document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
-   }
-  }
+  document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
 })
 socket.on("totalVentas", data => {
-  console.log(data)
-    if(data[0].totalVentadiaria != null){
-      document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
-    }
-  })
+    console.log(data)
+    document.querySelector(".totalVentas").innerHTML = `<h1>INGRESO DE VENTAS. TOTAL DE VENTAS DEL DIA: ${data[0].totalVentadiaria}</h1>`;
+})
 
 socket.on("ventaDiaria", ventas => {
     ventas.forEach(venta => { 

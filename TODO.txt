@@ -1,1 +1,0 @@
-Crear una vista para que puedan acceder a las vistas nuevas
