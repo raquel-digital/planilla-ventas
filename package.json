@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "heroku": "^7.59.1",
-    "mongoose": "^6.0.12",
+    "mongoose": "^6.3.1",
     "nodemon": "^2.0.15",
     "socket.io": "^1.0.0",
     "write-excel-file": "^1.0.0"
