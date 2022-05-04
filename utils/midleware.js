@@ -17,7 +17,7 @@ const middlewares = {
         }
         if(user.usuario == log.usuario && user.contraseña == log.contraseña){
             loginOk = true;
-            return next()
+            return next();
         }else{
             return  res.redirect('/login');
         } 
