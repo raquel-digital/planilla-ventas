@@ -19,7 +19,7 @@ const middlewares = {
             loginOk = true;
             return next();
         }else{
-            return  res.redirect('/login');
+            return  res.redirect('/login');//
         } 
     },
     logged : function (req, res, next) {
