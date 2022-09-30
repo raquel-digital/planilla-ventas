@@ -1,0 +1,1 @@
+ir a carpeta borrar mongo colecciones
