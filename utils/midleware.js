@@ -13,11 +13,11 @@ const middlewares = {
         if(admin.usuario == log.usuario && admin.contraseña == log.contraseña ){
             
             adminOk = true;
-            return next()
+            return res.end()
         }
         if(user.usuario == log.usuario && user.contraseña == log.contraseña){
             loginOk = true;
-            return next();
+            return res.end();
         }else{
             return  res.redirect('/login');//
         } 
